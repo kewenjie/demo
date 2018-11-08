@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>index</h3>
+	<h3><a  href="/userInfo/userList">userInfo</a></h3>
+	<h3><a shiro:hasRole="admin" href="/userInfo/userAdd">userAdd</a></h3>
+	<h3><a href="/userInfo/userDel">userDel</a></h3>
+</body>
+</html>

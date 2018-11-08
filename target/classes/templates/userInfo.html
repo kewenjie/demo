@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script>
+
+function sendAjax()
+{
+        var id = $("#cityid").val();
+ $.ajax(
+    {
+        url:"/userInfo/findUser",
+        data:{"id":id},
+        type:"post",
+        dataType:"json",
+        success:function(data)
+        {   
+            $("#erro").html("账号："+data.username);
+            $("#erro1").html("密码："+data.password);
+            $("#erro1").show();
+
+        },
+        error: function() {
+            $("#erro").html("查询失败");
+            $("#erro1").hide();
+          }
+    }); 
+    }
+</script>
+</head>
+<body>
+	
+	<h3>用户查询界面</h3>
+	<input type="text" name="cityid" id="cityid"/>
+	<h3 id="erro"></h3>
+	<h3 id="erro1"></h3>
+	<p><input type="button" onclick="sendAjax()" value="查询" id="ajaxLogin"/></p>
+	
+</body>
+</html>
