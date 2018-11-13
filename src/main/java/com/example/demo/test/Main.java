@@ -8,5 +8,8 @@ public class Main {
         String encodedPassword = new Md5Hash(password).toString();
 
         System.out.println(encodedPassword);
+        String psc = "100000141PCS";
+        String substring = psc.substring(0,9);
+        System.out.println(substring);
     }
 }

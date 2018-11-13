@@ -50,7 +50,7 @@ public class LoginController {
     @ResponseBody
     public Map<String, Object> submitLogin(@RequestParam("username") String username,
                                            @RequestParam("password") String password,
-                                           @RequestParam("password") String vcode,
+                                           @RequestParam("vcode") String vcode,
                                            @RequestParam("rememberMe") Boolean rememberMe) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         Map<String, String> map = new HashMap<String, String>();
@@ -73,6 +73,7 @@ public class LoginController {
             return resultMap;
         }
         ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
+        //首先判断当前redis中是否存在key ---SHIRO_LOGIN_COUNT + username
         if (stringRedisTemplate.hasKey(SHIRO_LOGIN_COUNT + username)) {
             //计数大于5时，设置用户被锁定一小时
             if (Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT + username)) >= 5) {
@@ -81,7 +82,9 @@ public class LoginController {
 
             }
         }
+        //如果存在并且次数没超过+1，如果不存在可以理解为初始化为1
         opsForValue.increment(SHIRO_LOGIN_COUNT + username, 1);
+        //剩余的登录次数
         int leftcount = 5 - Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT + username));
         opsForValue.set(SHIRO_LOGIN_LEFTCOUNT + username, String.valueOf(leftcount));
         stringRedisTemplate.expire(SHIRO_LOGIN_LEFTCOUNT + username, 1, TimeUnit.HOURS);
